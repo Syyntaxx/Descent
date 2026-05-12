@@ -1,9 +1,7 @@
 package descent;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import descent.move.Move;
+import descent.move.*;
 
 public class Combat {
 
@@ -15,7 +13,8 @@ public class Combat {
 		this.enemy = enemy;
 	}
 
-	public void startBattle(Player player, Enemy enemy) {
+	public boolean startBattle() {
+		boolean result = false;
 		Console.println(Console.BOLD_RED, "You encounter a " + enemy.getName() + "!");
 		Console.sleep(1000);
 
@@ -25,16 +24,19 @@ public class Combat {
 
 			if (enemy.isDefeated()) {
 				victory();
-				return;
+				result = true;
+				break;
 			}
 			enemyTurn();
 
 			if (player.getHealth() == 0) {
 				defeat();
-				break;
+				result = false;
+				
 			}
 
 		}
+		return result;
 	}
 
 	private void display() {
@@ -78,22 +80,21 @@ public class Combat {
 		}
 		
 		System.out.printf("%s%-3s%s %-18s%n", Console.BOLD_WHITE,
-		        (moves.size() + 1) + ".", Console.RESET, "Open Inventory", Console.RESET);
+		        (moves.size() + 1) + ".", Console.RESET, "Use item", Console.RESET);
 
 		System.out.println("\n--------------------------------------------");
 
 		int choice = Console.errCheckInt(">>> ", 1, moves.size() + 1);
+		
 		if (choice == moves.size() + 1) {
-			// inventory turn
-			player.getInventory().displayInventory();
-			if (!player.getInventory().isEmpty()) {
-				int itemChoice = Console.errCheckInt("Choose item >>> ", 1, player.getInventory().getSize());
-				player.getInventory().useItem(itemChoice - 1, player);
-			}
-			else {
-				playerTurn();
-				return;
-			}
+		    boolean used = player.getInventory().useConsumableInCombat(player);
+		    
+		    if (!used) {
+		            playerTurn();
+		            return;
+		        }
+		        
+		
 		} else {
 			Move selectedMove = moves.get(choice - 1);
 			String result = selectedMove.execute(player, enemy);
@@ -104,10 +105,24 @@ public class Combat {
 	}
 
 	private void enemyTurn() {
+		int damage = Math.max(1, enemy.getAttack());
+
+		if (enemy instanceof Boss) {
+			Boss boss = (Boss) enemy;
+			
+			if (boss.isEnraged()) {
+				damage = (int) (damage * 1.5);
+			}
+			
+			if (boss.shouldUseAbility()) {
+				Console.sleep(500);
+				boss.useSpecialAbility(player);
+			}
+			
+		}
 		Console.sleep(1000);
 		Console.println(Console.RED, "\n" + enemy.getName() + " attacks!");
 		Console.sleep(500);
-		int damage = Math.max(1, enemy.getAttack());
 		player.takeDamage(damage);
 		Console.println(Console.BOLD_RED, "You took " + damage + " damage!\n");
 		Console.sleep(1000);
@@ -116,7 +131,7 @@ public class Combat {
 
 	private void victory() {
 		Console.println(Console.BOLD_YELLOW, "\nVictory! " + enemy.getName() + " has been defeated.");
-		Console.sleep(500);
+		Console.sleep(1000);
 		player.gainExperience(enemy.getExpReward());
 		Console.println(Console.CYAN, "You gained " + enemy.getExpReward() + " experience!");
 		player.addEnergy();
@@ -133,7 +148,7 @@ public class Combat {
 		} else {
 			Console.println(Console.YELLOW, "You lost a life! Lives remaining: " + player.getLivesRemaining());
 			Console.sleep(1000);
-			Console.println(Console.WHITE, "You retreat to safety to recover...");
+			Console.println(Console.YELLOW, "You retreat to safety to recover...");
 			player.heal();
 		}
 	}

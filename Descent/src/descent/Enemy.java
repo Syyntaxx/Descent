@@ -1,5 +1,7 @@
 package descent;
 
+import descent.item.*;
+
 public class Enemy {
 
 	private String name;
@@ -7,14 +9,20 @@ public class Enemy {
 	private int maxHealth;
 	private int health;
 	private int attack;
-	private int defense;
 	private int expReward;
 	private Type type;
 	
 	
 	public enum Type{
-		SHROOMBEAR, 
+		SHROOMBEAR,
 		HAMMERBEAK,
+		SILKFANG,
+		DRAGON,
+		OTTOBAS,
+		CRIMSON_SPLITJAW,
+		STINGERHEAD,
+		ROCK_LICKER,
+		VALLEY_CROAKER
 	}
 	
 	
@@ -27,26 +35,64 @@ public class Enemy {
 
 		case SHROOMBEAR:
 			this.name = "Shroombear";
-			this.maxHealth = level * 15;
-			this.attack = level * 6;
+			this.maxHealth = level * 5;
+			this.attack = level * 5;
 			this.expReward = (int) (level * 2.5);
-
-			this.defense = 0;
-			
 			break;
 
 		case HAMMERBEAK:
 			this.name = "Hammerbeak";
-			this.maxHealth = level * 6;
+			this.maxHealth = level * 4;
 			this.attack = level * 3;
 			this.expReward = (int) (level * 2);
-			this.defense = 0;
 			break;
 		
+		case SILKFANG:
+			this.name = "Silkfang";
+			this.maxHealth = level * 4;
+			this.attack = level * 3;
+			this.expReward = (int) (level * 2.75);
+			break;
+			
+		case OTTOBAS:
+			this.name = "Ottobas";
+			this.maxHealth = level * 6;
+			this.attack = level * 2;
+			this.expReward = (int) (level * 1.5);
+			break;
+
+		case CRIMSON_SPLITJAW:
+			this.name = "Crimson Splitjaw";
+			this.maxHealth = level * 6;
+			this.attack = (int) (level * 5.5);
+			this.expReward = (int) (level * 3.5);
+			break;
+
+		case STINGERHEAD:
+			this.name = "Stingerhead";
+			this.maxHealth = level * 4;
+			this.attack = level * 4;
+			this.expReward = (int) (level * 2.5);
+			break;
+
+		case ROCK_LICKER:
+			this.name = "Rock Licker";
+			this.maxHealth = level * 3;
+			this.attack =(int) (level * 1.3);
+			this.expReward = (int) (level * 1.8);
+			break;
+
+		case VALLEY_CROAKER:
+			this.name = "Valley Croaker";
+			this.maxHealth = level * 4;
+			this.attack = level * 3;
+			this.expReward = (int) (level * 2);
+			break;
 		}
 		
 		this.health = maxHealth;
 		this.level = level;
+		
 		
 	}
 //Combat methods==================================================================
@@ -55,22 +101,52 @@ public class Enemy {
 	}
 
 	public void takeDamage(int damage) {
-		int reducedDamage =  Math.max(damage - defense, 0);
-		health = Math.max(health - reducedDamage, 0);
+		health = Math.max(health - damage, 0);
 	}
+	
+	public void heal() {
+		health = maxHealth;
+	}
+	
+	public void heal (int amount) {
+		health = Math.min(health + amount, maxHealth);
+	}
+	
+	
+	
 
 	
 	//Getters=====================================================================
 	public String getName() { return name; }
 	public int getLevel() { return level; }
-	public int getDefense() { return defense; }
 	public int getHealth() { return health; }
 	public int getMaxHealth() { return maxHealth; }
 	public int getAttack() { return attack; } 
 	public int getExpReward() { return expReward; }
 	public Type getType() { return type; }
 	
+	//Loot========================================================================
 	
-	
+	public LootDrop getLootDrop() {
+	    switch (type) {
+	    	case ROCK_LICKER:
+	    		return new LootDrop(new CaveHood(), 1);
+	    		
+	    	case VALLEY_CROAKER:
+	    		return new LootDrop(new LanternGoggles(), 1);
+	    	
+	        case SHROOMBEAR:
+	            return new LootDrop(new SpeedBoots(), 1);
+
+	        case HAMMERBEAK:
+	           return new LootDrop(new HealthPotion(), 1);
+
+	        case SILKFANG:
+	            return new LootDrop(new StonePlate(), 1);
+
+	        default:
+	            return new LootDrop(new EnergyPotion(), 1);
+	    }
+	}
 	
 }

@@ -18,6 +18,8 @@ public abstract class Item {
 		this.rarity = rarity;
 	}
 
+	
+	
 	public abstract void use(Player player);
 	
 	public abstract void unequip(Player player);
@@ -25,5 +27,7 @@ public abstract class Item {
 	public String getName() { return name; }
 	public String getDescription() { return description; }
 	public Rarity getRarity() { return rarity; }
-
+	
+	
+	
 }

@@ -6,7 +6,7 @@ import descent.Player;
 public class EnergyPotion extends Consumable{
 
 	public EnergyPotion() {
-		super("Energy Potion", "Recharge 5 energy", Rarity.CONSUMABLE);
+		super("Energy potion", "Recharge 5 energy", Rarity.CONSUMABLE);
 	}
 
 	@Override

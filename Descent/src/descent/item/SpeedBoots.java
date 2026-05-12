@@ -1,26 +1,25 @@
 package descent.item;
 
-import descent.Console;
+
 import descent.Player;
 
 public class SpeedBoots extends Equipment{
 
 	public SpeedBoots() {
-		super("Speed Boots", "Boots that make you run faster (+3 agility", Item.Rarity.UNCOMMON);
+		super("Speed Boots", "Boots that make you run faster (+3 agility)", Item.Rarity.UNCOMMON, Equipment.Slot.BOOTS,
+				0, 3, 0, 0);
+		//str, agl, vit, intel
 	}
 	
-	@Override
-	public void use(Player player) {
-		player.increaseAgility(3);
-	}
 	
 	public void unequip(Player player) {
-		player.increaseAgility(-3);
+		player.increaseAgility(-getAgilityBonus());
+
 	}
 
 	@Override
 	public void equip(Player player) {
-		player.increaseAgility(-3);
-		
+		player.increaseAgility(getAgilityBonus());
 	}
+	
 }
