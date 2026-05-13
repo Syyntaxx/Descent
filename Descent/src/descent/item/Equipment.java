@@ -9,16 +9,16 @@ public abstract class Equipment extends Item {
 	private int strengthBonus;
 	private int agilityBonus;
 	private int vitalityBonus;
-	private int intelligenceBonus;
+	private int luckBonus;
 
-	public Equipment(String name, String description, Rarity rarity, Slot slot, int str, int agl, int vit, int intl) {
+	public Equipment(String name, String description, Rarity rarity, Slot slot, int str, int agl, int vit, int luck) {
 		super(name, description, rarity);
 		this.slot = slot;
 		
 		this.strengthBonus = str;
 		this.agilityBonus = agl;
 		this.vitalityBonus = vit;
-	    this.intelligenceBonus = intl;
+	    this.luckBonus = luck;
 	}
 	 	
 	public enum Slot {
@@ -36,7 +36,7 @@ public abstract class Equipment extends Item {
 	public int getStrengthBonus() { return strengthBonus; }
 	public int getAgilityBonus() { return agilityBonus; }
 	public int getVitalityBonus() { return vitalityBonus; }
-	public int getIntelligenceBonus() { return intelligenceBonus; }	
+	public int getLuckBonus() { return luckBonus; }	
 	
 	public Slot getSlot() { return slot; }
 

@@ -17,7 +17,6 @@ public class Enemy {
 		SHROOMBEAR,
 		HAMMERBEAK,
 		SILKFANG,
-		DRAGON,
 		OTTOBAS,
 		CRIMSON_SPLITJAW,
 		STINGERHEAD,
@@ -35,58 +34,58 @@ public class Enemy {
 
 		case SHROOMBEAR:
 			this.name = "Shroombear";
-			this.maxHealth = level * 5;
+			this.maxHealth = 10 + level * 5;
 			this.attack = level * 5;
-			this.expReward = (int) (level * 2.5);
+			this.expReward = (int) (level * 8.5);
 			break;
 
 		case HAMMERBEAK:
 			this.name = "Hammerbeak";
-			this.maxHealth = level * 4;
+			this.maxHealth = 10 + level * 4;
 			this.attack = level * 3;
-			this.expReward = (int) (level * 2);
+			this.expReward = (int) (level * 7);
 			break;
 		
 		case SILKFANG:
 			this.name = "Silkfang";
-			this.maxHealth = level * 4;
+			this.maxHealth = 10 + level * 4;
 			this.attack = level * 3;
-			this.expReward = (int) (level * 2.75);
+			this.expReward = (int) (level * 5.5);
 			break;
 			
 		case OTTOBAS:
 			this.name = "Ottobas";
-			this.maxHealth = level * 6;
+			this.maxHealth = 10 +level * 6;
 			this.attack = level * 2;
-			this.expReward = (int) (level * 1.5);
+			this.expReward = (int) (level * 4.5);
 			break;
-
+			
 		case CRIMSON_SPLITJAW:
 			this.name = "Crimson Splitjaw";
-			this.maxHealth = level * 6;
+			this.maxHealth = 10 + level * 6;
 			this.attack = (int) (level * 5.5);
 			this.expReward = (int) (level * 3.5);
 			break;
 
 		case STINGERHEAD:
 			this.name = "Stingerhead";
-			this.maxHealth = level * 4;
+			this.maxHealth = 10 +level * 4;
 			this.attack = level * 4;
-			this.expReward = (int) (level * 2.5);
+			this.expReward = (int) (level * 9.5);
 			break;
 
 		case ROCK_LICKER:
 			this.name = "Rock Licker";
-			this.maxHealth = level * 3;
+			this.maxHealth = 10 +level * 3;
 			this.attack =(int) (level * 1.3);
-			this.expReward = (int) (level * 1.8);
+			this.expReward = (int) (level * 4.8);
 			break;
 
 		case VALLEY_CROAKER:
 			this.name = "Valley Croaker";
-			this.maxHealth = level * 4;
+			this.maxHealth = 10 +level * 4;
 			this.attack = level * 3;
-			this.expReward = (int) (level * 2);
+			this.expReward = (int) (level * 5.5);
 			break;
 		}
 		
@@ -144,6 +143,9 @@ public class Enemy {
 	        case SILKFANG:
 	            return new LootDrop(new StonePlate(), 1);
 
+	        case OTTOBAS:
+	        	return new LootDrop(new SpeedBoots(), 1);
+	        	
 	        default:
 	            return new LootDrop(new EnergyPotion(), 1);
 	    }

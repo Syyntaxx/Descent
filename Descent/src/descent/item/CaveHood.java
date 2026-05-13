@@ -6,7 +6,7 @@ import descent.Player;
 public class CaveHood extends Equipment{
 
 	public CaveHood() {
-		super("Cave Hood", "A plain red hood (+2 vitality)", Item.Rarity.UNCOMMON, Equipment.Slot.BOOTS,
+		super("Cave Hood", "A plain red hood (+2 vitality)", Item.Rarity.UNCOMMON, Equipment.Slot.HEAD,
 				0, 0, 2, 0);
 		//str, agl, vit, intel
 	}

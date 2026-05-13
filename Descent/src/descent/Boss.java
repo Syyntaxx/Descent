@@ -1,18 +1,14 @@
 package descent;
 
-import java.util.List;
-import java.util.ArrayList;
+
 import java.util.Random;
-import descent.move.*;
 
 public class Boss extends Enemy {
 
-	//private List<Move> specialMoves; //possible addition
 	private Ability ability;
 
 	public Boss(Type type, int level, Ability ability) {
 		super(type, level);
-		//this.specialMoves = new ArrayList<>();
 		this.ability = ability;
 	}
 
@@ -22,6 +18,7 @@ public class Boss extends Enemy {
 
 	Random random = new Random();
 
+	//special ability for the enemy
 	public void useSpecialAbility(Player player) {
 		switch (ability) {
 			case ENRAGE:
@@ -48,6 +45,7 @@ public class Boss extends Enemy {
 			
 	}
 	
+	//calculate if boss should use ability
 	public boolean shouldUseAbility() {
         switch (ability) {
             case ENRAGE:

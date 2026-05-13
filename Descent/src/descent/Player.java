@@ -2,11 +2,15 @@ package descent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import descent.item.*;
 import descent.move.*;
 
 public class Player {
+	
+	private Random random = new Random();
+
 
 	//Stats and values
 	private String name;
@@ -22,7 +26,7 @@ public class Player {
 	private int vitality;
 	private int energy;
 	private int maxEnergy;
-	private int intelligence;
+	private int luck;
 
 	private int depth = 0;
 	
@@ -39,13 +43,13 @@ public class Player {
 
 	// DEFAULTS
 	private static final int START_LEVEL = 1;
-	private static final int START_EXP_TO_NEXT_LEVEL = 100;
-	private static final int START_MAX_HEALTH = 100;
+	private static final int START_EXP_TO_NEXT_LEVEL = 50;
+	private static final int START_MAX_HEALTH = 50;
 	private static final int START_LIVES = 3;
 	private static final int START_STAT_POINTS = 8;
 	private static final int START_MAX_ENERGY = 20;
 
-	public Player(String name, int agility, int intelligence, int strength, int vitality) {
+	public Player(String name, int agility, int luck, int strength, int vitality) {
 
 		this.name = name;
 		this.maxHealth = START_MAX_HEALTH + vitality * 5;
@@ -56,7 +60,7 @@ public class Player {
 		this.maxEnergy = START_MAX_ENERGY;
 		this.energy = maxEnergy;
 		this.agility = agility;
-		this.intelligence = intelligence;
+		this.luck = luck;
 		this.strength = strength;
 		this.vitality = vitality;
 		this.statPoints = START_STAT_POINTS;
@@ -98,7 +102,7 @@ public class Player {
     public int getStrength() { return strength; }
     public int getAgility() { return agility; }
     public int getVitality() { return vitality; }
-    public int getIntelligence() { return intelligence; }
+    public int getLuck() { return luck; }
     public int getEnergy() { return energy; }
     public int getMaxEnergy() { return maxEnergy; }
     public int getDepth() { return depth; }
@@ -144,8 +148,8 @@ public class Player {
 			
 			break;
 
-		case "intelligence":
-			intelligence += points;
+		case "luck":
+			luck += points;
 			break;
 
 		default:
@@ -161,8 +165,8 @@ public class Player {
 		strength += points;
 	}
 
-	public void increaseIntelligence(int points) {
-		intelligence += points;
+	public void increaseLuck(int points) {
+		luck += points;
 	}
 
 	public void increaseAgility(int points) {
@@ -235,6 +239,15 @@ public class Player {
 		energy = maxEnergy;
 	}
 	
+
+public boolean isCrit() {
+	
+    int baseCrit = 10; // 5%
+    int critChance = baseCrit + (luck / 2); 
+
+    return random.nextInt(100) < critChance;
+}
+	
 	public void displayStats() {
 	    String separator = "------------------------------------------";
 	    String doubleSeparator = "==========================================";
@@ -266,7 +279,7 @@ public class Player {
 	    // Attributes
 	    Console.println(Console.BOLD_WHITE, " ATTRIBUTES (" + statPoints + " Points Available)");
 	    Console.println(Console.WHITE, String.format("  STR: %-5d  AGI: %-5d", strength, agility));
-	    Console.println(Console.WHITE, String.format("  VIT: %-5d  INT: %-5d", vitality, intelligence));
+	    Console.println(Console.WHITE, String.format("  VIT: %-5d  INT: %-5d", vitality, luck));
 
 	    Console.println(Console.CYAN, separator);
 
@@ -287,6 +300,7 @@ public class Player {
 		}
 	}
 	
+	//handle player depth ===================================
 	public void increaseDepth(int amount) {
 	    depth += amount;
 	}
@@ -294,10 +308,37 @@ public class Player {
 	public void setDepth(int amount) {
 		depth = amount;
 	}
-	
+	//=======================================================
 	public void levelUp() { //player levels up
 		exp -= expToNextLevel;
 		level++;
+		
+		switch (level) {
+			case 3:
+				whistle = Whistle.RED;
+				Console.println(Console.BOLD_CYAN, "\nYou are now a RED whistle!\n");
+				break;
+			case 10:
+				whistle = Whistle.BLUE;
+				Console.println(Console.BOLD_CYAN, "\nYou are now a BLUE whistle!\n");
+
+				break;
+			case 20:
+				whistle = Whistle.MOON;
+				Console.println(Console.BOLD_CYAN, "\nYou are now a MOON whistle!\n");
+
+				break;
+			case 30:
+				whistle = Whistle.BLACK;
+				Console.println(Console.BOLD_CYAN, "\nYou are now a BLACK whistle!\n");
+
+				break;
+			case 40:
+				whistle = Whistle.WHITE;
+				Console.println(Console.BOLD_CYAN, "\nYou are now a WHITE whistle!\n");
+				break;
+		}
+			
 
 		expToNextLevel = (int) Math.round(expToNextLevel * 1.12);
 		maxHealth += 10;
@@ -320,6 +361,7 @@ public class Player {
 
 	}
 	
+	//inventory ============================================================
 	public boolean isEquipped(Equipment eq) {
 		 return (head != null && head.getName().equalsIgnoreCase(eq.getName())) ||
 		        (torso != null && torso.getName().equalsIgnoreCase(eq.getName())) ||
@@ -381,7 +423,7 @@ public class Player {
 	}
 	
 	
-	
+	//
 	public void equipItem(String itemName) {
 	    int index = inventory.getItemIndex(itemName);
 
@@ -399,6 +441,8 @@ public class Player {
 
 	    toggleEquip((Equipment) item);
 	}
+	//=============================================================
+	
 	
 	
 	

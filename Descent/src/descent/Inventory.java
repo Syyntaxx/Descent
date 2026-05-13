@@ -82,8 +82,8 @@ public class Inventory {
 	        stats += " +" + eq.getAgilityBonus() + " AGI";
 	    if (eq.getVitalityBonus() != 0)
 	        stats += " +" + eq.getVitalityBonus() + " VIT";
-	    if (eq.getIntelligenceBonus() != 0)
-	        stats += " +" + eq.getIntelligenceBonus() + " INT";
+	    if (eq.getLuckBonus() != 0)
+	        stats += " +" + eq.getLuckBonus() + " LCK";
 
 	    return stats.isEmpty() ? "" : " (" + stats.trim() + ")";
 	}
@@ -154,6 +154,7 @@ public class Inventory {
 	    return displayItems;
 	}
 
+	//rarity color
 	private String getRarityColour(Item.Rarity rarity) {
 		switch (rarity) {
 		case CONSUMABLE:	return Console.WHITE;
@@ -166,6 +167,7 @@ public class Inventory {
 		}
 	}
 
+	
 	public int getNumberOfItems(Item item) {
 		int i = 0;
 		for (Item n : items) {
@@ -185,6 +187,7 @@ public class Inventory {
 		return -1; // not found
 	}
 	
+	//combat inventory, only able to use consumables
 	public boolean useConsumableInCombat(Player player) {
 	    List<Item> displayItems = getDisplayItems();
 	    List<Item> consumables = new ArrayList<>();

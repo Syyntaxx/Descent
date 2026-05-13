@@ -10,15 +10,26 @@ public class BasicAttack extends Move{
 	
 	@Override
 	public String execute(Player player, Enemy enemy) {
-		if(!player.hasEnergy(energyCost)) {
-			return "[FAIL]: not enough energy!";
-		}
-		
-		int damage = player.getStrength() * 2;
-		player.useEnergy(energyCost);
-		enemy.takeDamage(damage);
-		
-		return "[HIT]: You strike for " + damage + " damage!";
-		
+	    if (!player.hasEnergy(energyCost)) {
+	        return "[FAIL]: not enough energy!";
+	    }
+
+	    player.useEnergy(energyCost);
+
+	    int damage = 3 + player.getStrength() * 4;
+
+	    boolean crit = player.isCrit();
+
+	    if (crit) {
+	        damage *= 2;
+	    }
+
+	    enemy.takeDamage(damage);
+
+	    if (crit) {
+	        return "[CRIT HIT]: You strike for " + damage + " damage!";
+	    } else {
+	        return "[HIT]: You strike for " + damage + " damage!";
+	    }
 	}
 }
